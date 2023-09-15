@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HomeFinder.Core\HomeFinder.Core.csproj" />
     <ProjectReference Include="..\HomeFinder.Infrastructure\HomeFinder.Infrastructure.csproj" />
   </ItemGroup>

@@ -41,12 +41,13 @@ namespace HomeFinder.Infrastructure.DataAccess
             modelBuilder.Entity<User>().Property(u => u.Phone).IsRequired().HasMaxLength(25);
             modelBuilder.Entity<User>().Property(u => u.Address).IsRequired().HasMaxLength(255);
             modelBuilder.Entity<User>().Property(u => u.IdentityId).IsRequired().HasMaxLength(30);
-            
-            modelBuilder.Entity<Category>().Property(c => c.Name).IsRequired().HasMaxLength(255);
+
+           modelBuilder.Entity<Category>().Property(c => c.Name).HasMaxLength(255).IsRequired();
 
             modelBuilder.Entity<Order>().Property(o => o.AccountId).IsRequired().HasMaxLength(255);
             modelBuilder.Entity<Order>().Property(o => o.RoomId).IsRequired().HasMaxLength(255);
-          
+            
+            
 
             modelBuilder.Entity<Comment>().Property(c => c.Message).HasMaxLength(255);
             modelBuilder.Entity<Comment>().Property(c => c.AccountId).IsRequired();
@@ -84,6 +85,8 @@ namespace HomeFinder.Infrastructure.DataAccess
             modelBuilder.Entity<Order>().HasOne<OrderDetails>(o => o.OrderDetails).WithOne(o => o.Order).HasForeignKey<OrderDetails>(o => o.OrderId); 
 
         }
+
+   
         public DbSet<Category> Categories { get; set; }
         public DbSet<Home> Homes { get; set; }
         public DbSet<Room> Rooms { get; set; }
@@ -91,7 +94,7 @@ namespace HomeFinder.Infrastructure.DataAccess
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
     }
 }
