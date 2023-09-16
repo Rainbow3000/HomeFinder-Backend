@@ -13,7 +13,7 @@ namespace HomeFinder.Core.Entity
         public string Phone { get; set; }
         public string? Address { get; set; }
         public string IdentityId { get; set; }
-        public int? Age { get; set;}
+        public int Age { get; set;}
 
         public Account Account { get; set; }
     }

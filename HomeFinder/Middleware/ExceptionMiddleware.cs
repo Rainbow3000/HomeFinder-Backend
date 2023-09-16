@@ -27,9 +27,6 @@ namespace HomeFinder.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-
-            
-
             var errorResponse = new
             {
                 Message = exception.Message,

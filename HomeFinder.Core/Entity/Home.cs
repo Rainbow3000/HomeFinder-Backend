@@ -13,9 +13,9 @@ namespace HomeFinder.Core.Entity
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? Address { get; set; }
-        public int? Rate { get; set; }
+        public int Rate { get; set; }
         public int? Type { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
         public ICollection<Room> Rooms { get; set; }

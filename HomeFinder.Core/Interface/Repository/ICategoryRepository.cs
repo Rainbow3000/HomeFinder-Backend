@@ -10,6 +10,6 @@ namespace HomeFinder.Core.Interface.Repository
 {
     public interface ICategoryRepository:IBaseRepository<Category>
     {
-        Task<List<Category>> GetListAsync(); 
+     
     }
 }

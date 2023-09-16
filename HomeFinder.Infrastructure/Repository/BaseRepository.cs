@@ -45,7 +45,7 @@ namespace HomeFinder.Infrastructure.Repository
 
         }
 
-        public async Task<List<TEntity>> GetAllAsync(string? sql, Func<dynamic, TEntity> map)
+        public async Task<List<TEntity>> GetAllAsync(string? sql, Func<DbDataReader, TEntity> map)
         {
             using (var command = _databaseContext.Database.GetDbConnection().CreateCommand())
             {
@@ -68,7 +68,7 @@ namespace HomeFinder.Infrastructure.Repository
 
         }
 
-        public async Task<TEntity> GetAsync(string sql, Guid id , Func<dynamic, TEntity> map)
+        public async Task<TEntity> GetAsync(string sql, Guid id , Func<DbDataReader, TEntity> map)
         {
             dynamic entity = null; 
             using (var command = _databaseContext.Database.GetDbConnection().CreateCommand())

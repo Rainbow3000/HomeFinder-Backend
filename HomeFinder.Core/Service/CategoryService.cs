@@ -8,11 +8,11 @@ namespace HomeFinder.Core.Service
 {
     public class CategoryService:BaseService<Category,CategoryDto,CategoryCreateDto,CategoryUpdateDto>,ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapper _mapper; 
+       // private readonly ICategoryRepository _categoryRepository;
+       // private readonly IMapper _mapper; 
         public CategoryService(ICategoryRepository categoryRepository,IMapper mapper):base(categoryRepository,mapper)
         {
-            _categoryRepository = categoryRepository;
+           // _categoryRepository = categoryRepository;
           
         }
     }

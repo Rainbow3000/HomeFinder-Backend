@@ -19,10 +19,6 @@ namespace HomeFinder.Infrastructure.Repository
             _databaseContext = databaseContext;
             _mapper = mapper; 
         }
-            
-        public Task<List<Category>> GetListAsync()
-        {
-            throw new NotImplementedException();
-        }
+           
     }
 }

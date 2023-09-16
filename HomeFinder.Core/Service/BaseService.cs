@@ -29,14 +29,9 @@ namespace HomeFinder.Core.Service
         public async Task<List<TEntityDto>> GetAllAsync()
         {
             string sql = SqlQueryHelper<TEntity>.GetSqlMethod();
-          
-            var obj = typeof(TEntity).GetType().GetProperties().ToList().Select(property =>
-            {
-                return property; 
-            });
             string entityName = typeof(TEntity).Name;
 
-            var entities = await _baseRepository.GetAllAsync(sql, x => DataMappingHelper<TEntity>.DataMapper(x,_mapper)!); 
+            var entities = await _baseRepository.GetAllAsync(sql, x => DataMappingHelper<TEntity>.DataMapper(x,_mapper)); 
             var entitiesDto = _mapper.Map<List<TEntityDto>>(entities); 
             return entitiesDto; 
         }

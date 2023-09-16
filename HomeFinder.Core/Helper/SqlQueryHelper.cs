@@ -66,13 +66,13 @@ namespace HomeFinder.Core.Helper
 
         public static string  GetSqlMethod()
         {
-            string sql = $"SELECT * FROM {entityName}"; 
+            string sql = $"SELECT * FROM [{entityName}]"; 
             return sql;
         }
 
         public static string DeleteSqlMethod()
         {
-            string sql = $"DELETE FROM {entityName}";
+            string sql = $"DELETE FROM [{entityName}]";
             return sql;
         }
     }
