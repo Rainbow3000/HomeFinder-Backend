@@ -2,12 +2,17 @@
 using HomeFinder.Core.Entity;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
+using HomeFinder.Filter;
 using HomeFinder.Infrastructure.DataAccess;
+using HomeFinder.Middleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace HomeFinder.Controllers
 {
+
     [ApiController]
     public class CategorysController : BasesController<CategoryDto,CategoryCreateDto,CategoryUpdateDto>
     {

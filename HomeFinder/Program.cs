@@ -1,21 +1,26 @@
-using HomeFinder.Core.Exception;
+﻿
 using HomeFinder.Core.Interface.Repository;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
+using HomeFinder.Filter;
 using HomeFinder.Infrastructure.DataAccess;
 using HomeFinder.Infrastructure.Repository;
 using HomeFinder.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HomeFinder
 {
     public class Program
     {
-       
+        
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -38,30 +43,23 @@ namespace HomeFinder
                         errorsValue.Add(values);
                         index++;
                     });
-                    return new BadRequestObjectResult(new BaseException
+                    return new BadRequestObjectResult(new 
                     {
-                        ErrorCode = (int)HttpStatusCode.BadRequest,
-                        DevMsg = ReasonPhrases.GetReasonPhrase((int)HttpStatusCode.BadRequest),
-                        UserMsg = ReasonPhrases.GetReasonPhrase((int)HttpStatusCode.BadRequest),
-                        TraceId = "",
-                        MoreInfo = "",
-                        ErrorMsgs = errorsValue
-
+                        StatusCode = (int)HttpStatusCode.BadRequest,
+                        Message = errorsValue
                     });
                 };
             });
          
             builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-
-            builder.Services.AddScoped<IHomeRepository, HomeRepository>();
-            builder.Services.AddScoped<IHomeService, HomeService>();
 
             builder.Services.AddScoped<IAccountRepository, AccountRepository>();
             builder.Services.AddScoped<IAccountService, AccountService>();
@@ -75,15 +73,29 @@ namespace HomeFinder
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IRoomService, RoomService>();
 
-            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-            builder.Services.AddScoped<IOrderService, OrderService>();
 
-            builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
-            builder.Services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+            builder.Services.AddScoped<IImageRepository, ImageRepository>();
+            builder.Services.AddScoped<IImageService, ImageService>();
 
 
             builder.Services.AddDbContext<DatabaseContext>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            builder.Services.AddScoped<AdminTokenFilter>(); 
+           
+
+            var secretKey = builder.Configuration["Jwt:Key"];
+            var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+
+            builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -92,12 +104,12 @@ namespace HomeFinder
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+        
             app.UseMiddleware<ExceptionMiddleware>(); 
             app.UseHttpsRedirection();
-
+            app.UseCors("MyPolicy");
+            app.UseAuthentication(); 
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run();

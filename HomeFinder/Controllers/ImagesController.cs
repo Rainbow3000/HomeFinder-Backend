@@ -1,4 +1,4 @@
-﻿using HomeFinder.Core.Dto.Order;
+﻿using HomeFinder.Core.Dto.Image;
 using HomeFinder.Core.Entity;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace HomeFinder.Controllers
 {
     [ApiController]
-    public class OrdersController : BasesController<OrderDto, OrderCreateDto, OrderUpdateDto>
+    public class ImageController : BasesController<ImageDto, ImageCreateDto, ImageUpdateDto>
     {
-        private readonly IOrderService _orderService;
+        private readonly IImageService _imageService;
         private readonly DatabaseContext _databaseContext;
-        public OrdersController(IOrderService orderService, DatabaseContext databaseContext) : base(orderService)
+        public ImageController(IImageService imageService, DatabaseContext databaseContext) : base(imageService)
         {
-            _orderService = orderService;
+            _imageService = imageService;
             _databaseContext = databaseContext;
         }
     }

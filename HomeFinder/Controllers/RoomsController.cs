@@ -1,4 +1,6 @@
-﻿using HomeFinder.Core.Dto.Room;
+﻿using HomeFinder.Core.DataResponse;
+using HomeFinder.Core.Dto.Filter;
+using HomeFinder.Core.Dto.Room;
 using HomeFinder.Core.Entity;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
@@ -12,11 +14,16 @@ namespace HomeFinder.Controllers
     public class RoomsController : BasesController<RoomDto, RoomCreateDto, RoomUpdateDto>
     {
         private readonly IRoomService _roomService;
-        private readonly DatabaseContext _databaseContext;
         public RoomsController(IRoomService roomService, DatabaseContext databaseContext) : base(roomService)
         {
             _roomService = roomService;
-            _databaseContext = databaseContext;
+        }
+
+        [HttpGet("Filter")]
+        public async Task<DataResponse> GetListAsync([FromQuery] RoomFilter filter)
+        {
+            var entities  = await _roomService.GetListAsync(filter);
+            return new DataResponse(entities, StatusCodes.Status200OK); 
         }
     }
 }

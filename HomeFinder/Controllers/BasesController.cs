@@ -1,5 +1,8 @@
 ﻿
+using HomeFinder.Core.DataResponse;
 using HomeFinder.Core.Interface.Service;
+using HomeFinder.Filter;
+using HomeFinder.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
@@ -10,44 +13,47 @@ namespace HomeFinder.Controllers
     [ApiController]
     public class BasesController<TEntityDto, TEntityCreateDto, TEntityUpdateDto> : ControllerBase
     {
-        private readonly IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> _baseService; 
+        private readonly IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> _baseService;
+       
         public BasesController(IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> baseService) {
             _baseService  = baseService;
         }
 
-        [HttpGet]
+       
 
-        public async Task<IActionResult> GetAllAsync()
+        [HttpGet]
+       
+        public async Task<DataResponse> GetAllAsync()
         {
             var entities = await _baseService.GetAllAsync();
-            return StatusCode(200, entities);
+            return new DataResponse(entities,StatusCodes.Status200OK);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id) {
+        public async Task<DataResponse> GetAsync(Guid id) {
             var entity = await _baseService.GetAsync(id);
-            return StatusCode(200,entity); 
+            return new DataResponse(entity, StatusCodes.Status200OK);
         }
         [HttpPost]
-        public async Task<IActionResult> InsertAsync([FromBody] TEntityCreateDto entityCreateDto )
+        public async Task<DataResponse> InsertAsync([FromBody] TEntityCreateDto entityCreateDto )
         {
-            var entity = await _baseService.InsertAsync(entityCreateDto); 
-            return StatusCode(200, entity);
+            var entity = await _baseService.InsertAsync(entityCreateDto);
+            return  new DataResponse(entity, StatusCodes.Status200OK);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync([FromBody] TEntityUpdateDto entityUpdateDto , Guid id)
+        public async Task<DataResponse> PutAsync([FromBody] TEntityUpdateDto entityUpdateDto , Guid id)
         {
             var entity = await _baseService.UpdateAsync(entityUpdateDto , id);
-            return StatusCode(200, entity); ;
+            return new DataResponse(entity, StatusCodes.Status200OK);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<DataResponse> Delete(Guid id)
         {
             await _baseService.DeleteAsync(id);
-            return StatusCode(200, "OK");
+            return new DataResponse(null, StatusCodes.Status200OK);
         }
     }
 }
