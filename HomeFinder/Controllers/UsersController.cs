@@ -1,4 +1,5 @@
-﻿using HomeFinder.Core.Dto.User;
+﻿using HomeFinder.Core.DataResponse;
+using HomeFinder.Core.Dto.User;
 using HomeFinder.Core.Entity;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
@@ -17,6 +18,12 @@ namespace HomeFinder.Controllers
         {
             _userService = userService;
             _databaseContext = databaseContext;
+        }
+        [HttpPost("Update")]
+        public async Task<DataResponse> InsertAsync([FromBody] UserCreateDto userCreateDto)
+        {
+            var data = await _userService.InsertAsync(userCreateDto);
+            return new DataResponse(data, StatusCodes.Status201Created);
         }
     }
 }

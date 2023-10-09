@@ -3,6 +3,7 @@ using HomeFinder.Core.Dto.Account;
 using HomeFinder.Core.Entity;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
+using HomeFinder.Filter.Jwt;
 using HomeFinder.Infrastructure.DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,5 +33,12 @@ namespace HomeFinder.Controllers
             var account = await _accountService.Login(accountLogin);
             return new DataResponse(account, StatusCodes.Status200OK);
         }
+
+        [ServiceFilter(typeof(AdminTokenFilter))]
+        public override Task<DataResponse> GetAllAsync()
+        {
+            return base.GetAllAsync();
+        }
+
     }
 }

@@ -23,20 +23,19 @@ namespace HomeFinder.Controllers
 
        
 
-        [HttpGet]
-       
+        [HttpGet]      
         public virtual async Task<DataResponse> GetAllAsync()
         {
             var entities = await _baseService.GetAllAsync();
             return new DataResponse(entities,StatusCodes.Status200OK);
         }
 
-
         [HttpGet("{id}")]
         public virtual async Task<DataResponse> GetAsync(Guid id) {
             var entity = await _baseService.GetAsync(id);
             return new DataResponse(entity, StatusCodes.Status200OK);
         }
+
         [HttpPost]
         [ServiceFilter(typeof(UserTokenFilter))]
         public virtual async Task<DataResponse> InsertAsync([FromBody] TEntityCreateDto entityCreateDto )
