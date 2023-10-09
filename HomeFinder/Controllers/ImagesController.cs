@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace HomeFinder.Controllers
 {
     [ApiController]
-    public class ImageController : BasesController<ImageDto, ImageCreateDto, ImageUpdateDto>
+    public class ImagesController : BasesController<ImageDto, ImageCreateDto, ImageUpdateDto>
     {
         private readonly IImageService _imageService;
         private readonly DatabaseContext _databaseContext;
-        public ImageController(IImageService imageService, DatabaseContext databaseContext) : base(imageService)
+        public ImagesController(IImageService imageService, DatabaseContext databaseContext) : base(imageService)
         {
             _imageService = imageService;
             _databaseContext = databaseContext;

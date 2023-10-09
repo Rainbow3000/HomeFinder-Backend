@@ -19,8 +19,4 @@
     <ProjectReference Include="..\HomeFinder.Infrastructure\HomeFinder.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Filter\Jwt\" />
-  </ItemGroup>
-
 </Project>

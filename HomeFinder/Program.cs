@@ -2,7 +2,7 @@
 using HomeFinder.Core.Interface.Repository;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Core.Service;
-using HomeFinder.Filter;
+using HomeFinder.Filter.Jwt;
 using HomeFinder.Infrastructure.DataAccess;
 using HomeFinder.Infrastructure.Repository;
 using HomeFinder.Middleware;
@@ -81,8 +81,9 @@ namespace HomeFinder
             builder.Services.AddDbContext<DatabaseContext>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            builder.Services.AddScoped<AdminTokenFilter>(); 
-           
+            builder.Services.AddScoped<AdminTokenFilter>();
+            builder.Services.AddScoped<UserTokenFilter>();
+
 
             var secretKey = builder.Configuration["Jwt:Key"];
             var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);

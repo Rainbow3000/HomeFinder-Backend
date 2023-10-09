@@ -2,9 +2,11 @@
 using HomeFinder.Core.DataResponse;
 using HomeFinder.Core.Interface.Service;
 using HomeFinder.Filter;
+using HomeFinder.Filter.Jwt;
 using HomeFinder.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Runtime.InteropServices;
 
 namespace HomeFinder.Controllers
@@ -23,7 +25,7 @@ namespace HomeFinder.Controllers
 
         [HttpGet]
        
-        public async Task<DataResponse> GetAllAsync()
+        public virtual async Task<DataResponse> GetAllAsync()
         {
             var entities = await _baseService.GetAllAsync();
             return new DataResponse(entities,StatusCodes.Status200OK);
@@ -31,29 +33,32 @@ namespace HomeFinder.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<DataResponse> GetAsync(Guid id) {
+        public virtual async Task<DataResponse> GetAsync(Guid id) {
             var entity = await _baseService.GetAsync(id);
             return new DataResponse(entity, StatusCodes.Status200OK);
         }
         [HttpPost]
-        public async Task<DataResponse> InsertAsync([FromBody] TEntityCreateDto entityCreateDto )
+        [ServiceFilter(typeof(UserTokenFilter))]
+        public virtual async Task<DataResponse> InsertAsync([FromBody] TEntityCreateDto entityCreateDto )
         {
             var entity = await _baseService.InsertAsync(entityCreateDto);
-            return  new DataResponse(entity, StatusCodes.Status200OK);
+            return  new DataResponse(entity, StatusCodes.Status201Created);
         }
 
         [HttpPut("{id}")]
-        public async Task<DataResponse> PutAsync([FromBody] TEntityUpdateDto entityUpdateDto , Guid id)
+        [ServiceFilter(typeof(UserTokenFilter))]
+        public virtual async Task<DataResponse> PutAsync([FromBody] TEntityUpdateDto entityUpdateDto , Guid id)
         {
             var entity = await _baseService.UpdateAsync(entityUpdateDto , id);
             return new DataResponse(entity, StatusCodes.Status200OK);
         }
 
         [HttpDelete("{id}")]
-        public async Task<DataResponse> Delete(Guid id)
+        [ServiceFilter(typeof(UserTokenFilter))]
+        public virtual async Task<DataResponse> Delete(Guid id)
         {
-            await _baseService.DeleteAsync(id);
-            return new DataResponse(null, StatusCodes.Status200OK);
+            int rowEffected =  await _baseService.DeleteAsync(id);
+            return new DataResponse(rowEffected, StatusCodes.Status200OK);
         }
     }
 }

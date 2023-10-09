@@ -22,8 +22,41 @@ namespace HomeFinder.Controllers
         [HttpGet("Filter")]
         public async Task<DataResponse> GetListAsync([FromQuery] RoomFilter filter)
         {
-            var entities  = await _roomService.GetListAsync(filter);
-            return new DataResponse(entities, StatusCodes.Status200OK); 
+            var entities = await _roomService.GetListAsync(filter);
+            return new DataResponse(entities, StatusCodes.Status200OK);
+
+        }
+
+        [HttpPut("UpdateImage/{id}")]
+        public async Task<DataResponse> PutImageAsync(Guid id)
+        {
+            var rowEffected = await _roomService.UpdateImageAsync(id);
+            return new DataResponse(rowEffected, StatusCodes.Status200OK);
+
+        }
+
+        [HttpPut("UpdateStatus/{id}")]
+        public async Task<DataResponse> PutStatusAsync(Guid id)
+        {
+            var rowEffected = await _roomService.UpdateStatusAsync(id);
+            return new DataResponse(rowEffected, StatusCodes.Status200OK);
+
+        }
+
+        [HttpGet("PageSize")]
+        public async Task<DataResponse> PageSizeAsync()
+        {
+            var pageSize = await _roomService.GetPageSize();
+            return new DataResponse(pageSize, StatusCodes.Status200OK);
+
+        }
+
+        [HttpGet("GetByUser/{id}")]
+        public async Task<DataResponse> GetByUser(Guid id)
+        {
+            var data = await _roomService.GetByUser(id);
+            return new DataResponse(data, StatusCodes.Status200OK);
+
         }
     }
 }
